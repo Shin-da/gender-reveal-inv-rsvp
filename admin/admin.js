@@ -36,6 +36,12 @@ function initAdminDashboard() {
     
     // Set up real-time subscriptions
     setupRealtimeSubscriptions();
+    
+    // Set up responsive table switching
+    setupResponsiveTables();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', handleResize);
 }
 
 // ===== AUTHENTICATION =====
@@ -108,10 +114,16 @@ function updateDashboardStats(rsvps) {
 }
 
 function updateGuestTable(rsvps) {
+    // Update desktop table
     const tbody = document.getElementById('guestTableBody');
     tbody.innerHTML = '';
 
+    // Update mobile table
+    const mobileTable = document.getElementById('mobileGuestTable');
+    mobileTable.innerHTML = '';
+
     rsvps.forEach(rsvp => {
+        // Desktop table row
         const row = document.createElement('tr');
         row.setAttribute('data-guest-id', rsvp.id);
         row.innerHTML = `
@@ -133,6 +145,55 @@ function updateGuestTable(rsvps) {
             </td>
         `;
         tbody.appendChild(row);
+
+        // Mobile card
+        const mobileCard = document.createElement('div');
+        mobileCard.className = 'mobile-guest-card';
+        mobileCard.setAttribute('data-guest-id', rsvp.id);
+        mobileCard.innerHTML = `
+            <div class="guest-header">
+                <h6 class="guest-name">${rsvp.guest_name}</h6>
+                <div class="guest-actions">
+                    <button class="btn btn-sm btn-outline-primary" onclick="editGuest(${rsvp.id})" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteGuest(${rsvp.id})" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="guest-info">
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">${rsvp.email}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Phone</span>
+                    <span class="info-value">${rsvp.phone || '-'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Attendees</span>
+                    <span class="info-value"><span class="badge bg-primary">${rsvp.attendee_count}</span></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Gender Prediction</span>
+                    <span class="info-value"><span class="gender-badge ${rsvp.gender_prediction}">${rsvp.gender_prediction}</span></span>
+                </div>
+                <div class="info-item full-width-info">
+                    <span class="info-label">Dietary Restrictions</span>
+                    <span class="info-value">${rsvp.dietary_restrictions || '-'}</span>
+                </div>
+                <div class="info-item full-width-info">
+                    <span class="info-label">Special Message</span>
+                    <span class="info-value">${rsvp.special_message || '-'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">RSVP Date</span>
+                    <span class="info-value">${formatDate(rsvp.created_at)}</span>
+                </div>
+            </div>
+        `;
+        mobileTable.appendChild(mobileCard);
     });
 }
 
@@ -436,6 +497,29 @@ window.addEventListener('error', function(e) {
     console.error('Global error:', e.error);
     showAlert('An error occurred. Please check the console for details.', 'danger');
 });
+
+// ===== RESPONSIVE TABLE FUNCTIONS =====
+
+function setupResponsiveTables() {
+    // Initial setup based on current screen size
+    handleResize();
+}
+
+function handleResize() {
+    const isMobile = window.innerWidth <= 768;
+    const desktopTable = document.querySelector('.table-responsive');
+    const mobileTable = document.getElementById('mobileGuestTable');
+    
+    if (isMobile) {
+        // Show mobile view, hide desktop view
+        if (desktopTable) desktopTable.style.display = 'none';
+        if (mobileTable) mobileTable.style.display = 'block';
+    } else {
+        // Show desktop view, hide mobile view
+        if (desktopTable) desktopTable.style.display = 'block';
+        if (mobileTable) mobileTable.style.display = 'none';
+    }
+}
 
 // ===== INITIALIZATION COMPLETE =====
 

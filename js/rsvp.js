@@ -304,9 +304,12 @@ function showSuccessMessage() {
     const successDiv = document.createElement('div');
     successDiv.className = 'alert alert-success alert-dismissible fade show';
     successDiv.innerHTML = `
-        <i class="fas fa-check-circle me-2"></i>
-        <strong>Thank you!</strong> Your RSVP has been submitted successfully. 
-        We can't wait to celebrate with you!
+        <div class="text-center">
+            <i class="fas fa-check-circle me-2" style="font-size: 1.5em; color: #28a745;"></i>
+            <h4 class="mb-2">🎉 Congratulations! 🎉</h4>
+            <p class="mb-2"><strong>Your RSVP has been submitted successfully!</strong></p>
+            <p class="mb-0">We can't wait to celebrate with you at the gender reveal party!</p>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
     
@@ -315,9 +318,163 @@ function showSuccessMessage() {
     // Scroll to message
     formMessages.scrollIntoView({ behavior: 'smooth', block: 'center' });
     
-    // Add celebration effect
-    if (window.CountdownManager && window.CountdownManager.createConfetti) {
-        window.CountdownManager.createConfetti();
+    // Add celebration effect with confetti
+    setTimeout(() => {
+        if (window.CountdownManager && window.CountdownManager.createConfetti) {
+            // Create multiple confetti bursts for extra celebration
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    window.CountdownManager.createConfetti();
+                }, i * 800);
+            }
+        } else {
+            // Fallback confetti if CountdownManager is not available
+            createFallbackConfetti();
+        }
+    }, 300);
+    
+    // Add success animation to the form
+    rsvpForm.classList.add('success-bounce');
+    setTimeout(() => {
+        rsvpForm.classList.remove('success-bounce');
+    }, 1000);
+    
+    // Play celebration sound
+    playCelebrationSound();
+    
+    // Add sparkle effect to the success message
+    addSparkleEffect(successDiv);
+    
+    // Add celebration emoji animation
+    addCelebrationEmojis();
+}
+
+function addCelebrationEmojis() {
+    const emojis = ['🎉', '🎊', '🎈', '👶', '💖', '✨', '🎁', '🎂'];
+    const container = document.querySelector('.rsvp-section') || document.body;
+    
+    emojis.forEach((emoji, index) => {
+        setTimeout(() => {
+            const emojiElement = document.createElement('div');
+            emojiElement.textContent = emoji;
+            emojiElement.style.cssText = `
+                position: fixed;
+                font-size: 2rem;
+                z-index: 1000;
+                pointer-events: none;
+                animation: emoji-float 4s ease-out forwards;
+                left: ${Math.random() * 80 + 10}vw;
+                top: 100vh;
+            `;
+            
+            document.body.appendChild(emojiElement);
+            
+            // Remove emoji after animation
+            setTimeout(() => {
+                if (emojiElement.parentNode) {
+                    emojiElement.remove();
+                }
+            }, 4000);
+        }, index * 200);
+    });
+}
+
+function playCelebrationSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Create a simple celebration melody
+        const frequencies = [523, 659, 784, 1047]; // C, E, G, C (higher)
+        
+        frequencies.forEach((freq, index) => {
+            setTimeout(() => {
+                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            }, index * 200);
+        });
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 1);
+    } catch (error) {
+        // Silently fail if audio is not supported or blocked
+        console.log('Audio not supported or blocked by browser');
+    }
+}
+
+function addSparkleEffect(element) {
+    // Add sparkle particles around the success message
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.cssText = `
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: #FFD700;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1000;
+                animation: sparkle-fade 1.5s ease-out forwards;
+            `;
+            
+            // Position sparkle around the element
+            const rect = element.getBoundingClientRect();
+            const x = rect.left + Math.random() * rect.width;
+            const y = rect.top + Math.random() * rect.height;
+            
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            
+            document.body.appendChild(sparkle);
+            
+            // Remove sparkle after animation
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.remove();
+                }
+            }, 1500);
+        }, i * 100);
+    }
+}
+
+function createFallbackConfetti() {
+    const colors = ['#FF69B4', '#87CEEB', '#FFD700', '#FF6B6B', '#4ECDC4', '#FF8C42', '#9370DB', '#20B2AA'];
+    const confettiCount = 60;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 8 + 6;
+            const startX = Math.random() * 100;
+            
+            confetti.style.cssText = `
+                position: fixed;
+                top: -20px;
+                left: ${startX}vw;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                border-radius: 50%;
+                z-index: 9999;
+                animation: confetti-fall 3s linear forwards;
+            `;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.remove();
+                }
+            }, 4000);
+        }, i * 50);
     }
 }
 

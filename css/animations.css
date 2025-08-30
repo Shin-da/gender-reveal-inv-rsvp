@@ -1,5 +1,76 @@
 /* ===== KEYFRAME ANIMATIONS ===== */
 
+/* Confetti fall animation */
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Confetti spin animation */
+@keyframes confetti-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Confetti bounce animation */
+@keyframes confetti-bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Sparkle fade animation */
+@keyframes sparkle-fade {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) rotate(360deg);
+    }
+}
+
+/* Emoji float animation */
+@keyframes emoji-float {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(80vh) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(20vh) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10vh) scale(0.8);
+    }
+}
+
 /* Gentle floating animation for elegant circles */
 @keyframes float-gentle {
     0%, 100% {
@@ -119,6 +190,22 @@
 }
 
 /* ===== ANIMATION CLASSES ===== */
+
+/* Confetti styles */
+.confetti-piece {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confetti-fall 3s linear forwards;
+}
+
+.confetti-piece.spin {
+    animation: confetti-fall 3s linear forwards, confetti-spin 2s linear infinite;
+}
+
+.confetti-piece.bounce {
+    animation: confetti-fall 3s linear forwards, confetti-bounce 1s ease-in-out infinite;
+}
 
 /* Floating elements */
 .floating {
@@ -350,5 +437,159 @@
     
     .hover-lift:hover {
         transform: translateY(-2px);
+    }
+    
+    /* Reduce animation complexity on mobile for better performance */
+    .animate-on-scroll {
+        transition: all 0.4s ease-out;
+    }
+    
+    .stagger-item {
+        transition: all 0.4s ease-out;
+    }
+    
+    /* Reduce floating animation intensity on mobile */
+    .floating-elements {
+        opacity: 0.5;
+    }
+    
+    /* Optimize keyframe animations for mobile */
+    @keyframes float-gentle {
+        0%, 100% {
+            transform: translateY(0px) scale(1);
+            opacity: 0.05;
+        }
+        50% {
+            transform: translateY(-10px) scale(1.02);
+            opacity: 0.08;
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    /* Further reduce animations on small screens */
+    .floating,
+    .floating-slow,
+    .floating-fast {
+        animation-duration: 12s;
+    }
+    
+    .animate-on-scroll {
+        transition: all 0.3s ease-out;
+    }
+    
+    .stagger-item {
+        transition: all 0.3s ease-out;
+    }
+    
+    /* Disable floating animations on very small screens */
+    .floating-elements {
+        display: none;
+    }
+}
+
+/* ===== TOUCH DEVICE ANIMATION OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Reduce or disable hover animations on touch devices */
+    .hover-lift:hover,
+    .hover-scale:hover {
+        transform: none;
+    }
+    
+    .bounce-on-hover:hover,
+    .pulse-on-hover:hover {
+        animation: none;
+    }
+    
+    /* Optimize for touch interactions */
+    .button-click:active {
+        transform: scale(0.95);
+    }
+    
+    /* Reduce floating animations on touch devices */
+    .floating,
+    .floating-slow,
+    .floating-fast {
+        animation-duration: 15s;
+        opacity: 0.3;
+    }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+@media (prefers-reduced-motion: reduce) {
+    /* Respect user's motion preferences */
+    .floating,
+    .floating-slow,
+    .floating-fast {
+        animation: none !important;
+    }
+    
+    .hover-lift:hover,
+    .hover-scale:hover {
+        transform: none !important;
+    }
+    
+    .bounce-on-hover:hover,
+    .pulse-on-hover:hover {
+        animation: none !important;
+    }
+    
+    .animate-on-scroll,
+    .stagger-item {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    /* Ensure content is visible when motion is reduced */
+    .animate-on-scroll,
+    .stagger-item {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* ===== BATTERY SAVING MODE ===== */
+@media (prefers-reduced-motion: reduce), (max-width: 480px) {
+    /* Reduce animation complexity for battery saving */
+    .floating-elements {
+        display: none;
+    }
+    
+    .animate-on-scroll {
+        transition: opacity 0.3s ease-out;
+    }
+    
+    .stagger-item {
+        transition: opacity 0.3s ease-out;
+    }
+    
+    /* Simplify keyframe animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 }

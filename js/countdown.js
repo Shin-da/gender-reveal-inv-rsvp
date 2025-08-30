@@ -181,24 +181,62 @@ function addCelebrationEffect() {
 }
 
 function createConfetti() {
-    const colors = ['#FF69B4', '#87CEEB', '#FFD700', '#FF6B6B', '#4ECDC4'];
-    const confettiCount = 50;
+    const colors = ['#FF69B4', '#87CEEB', '#FFD700', '#FF6B6B', '#4ECDC4', '#FF8C42', '#9370DB', '#20B2AA', '#FF1493', '#00CED1'];
+    const shapes = ['circle', 'square', 'triangle', 'star'];
+    const confettiCount = 80;
     
     for (let i = 0; i < confettiCount; i++) {
         setTimeout(() => {
             const confetti = document.createElement('div');
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 8 + 6; // 6-14px
+            const startX = Math.random() * 100; // Random starting position
+            const animationDuration = Math.random() * 2 + 2; // 2-4 seconds
+            const delay = Math.random() * 0.5; // Random delay for natural effect
+            
+            // Set base styles
             confetti.className = 'confetti-piece';
             confetti.style.cssText = `
                 position: fixed;
-                top: -10px;
-                left: ${Math.random() * 100}vw;
-                width: 10px;
-                height: 10px;
-                background: ${colors[Math.floor(Math.random() * colors.length)]};
-                border-radius: 50%;
+                top: -20px;
+                left: ${startX}vw;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
                 z-index: 9999;
-                animation: confetti-fall 3s linear forwards;
+                animation: confetti-fall ${animationDuration}s linear ${delay}s forwards;
             `;
+            
+            // Apply different shapes and effects
+            if (shape === 'circle') {
+                confetti.style.borderRadius = '50%';
+                confetti.classList.add('spin');
+            } else if (shape === 'square') {
+                confetti.style.borderRadius = '2px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            } else if (shape === 'triangle') {
+                confetti.style.width = '0';
+                confetti.style.height = '0';
+                confetti.style.background = 'transparent';
+                confetti.style.borderLeft = `${size/2}px solid transparent`;
+                confetti.style.borderRight = `${size/2}px solid transparent`;
+                confetti.style.borderBottom = `${size}px solid ${color}`;
+                confetti.classList.add('bounce');
+            } else if (shape === 'star') {
+                // Create a simple star shape using CSS
+                confetti.style.background = `radial-gradient(circle at 30% 30%, ${color} 0%, ${color} 40%, transparent 40%, transparent 100%),
+                                           radial-gradient(circle at 70% 30%, ${color} 0%, ${color} 40%, transparent 40%, transparent 100%),
+                                           radial-gradient(circle at 30% 70%, ${color} 0%, ${color} 40%, transparent 40%, transparent 100%),
+                                           radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 40%, transparent 40%, transparent 100%),
+                                           radial-gradient(circle at 50% 50%, ${color} 0%, ${color} 60%, transparent 60%, transparent 100%)`;
+                confetti.classList.add('spin');
+            }
+            
+            // Add some pieces with different animation variations
+            if (Math.random() > 0.7) {
+                confetti.style.animationDelay = `${delay + 0.5}s`;
+            }
             
             document.body.appendChild(confetti);
             
@@ -207,8 +245,8 @@ function createConfetti() {
                 if (confetti.parentNode) {
                     confetti.remove();
                 }
-            }, 3000);
-        }, i * 50);
+            }, (animationDuration + delay) * 1000 + 1000);
+        }, i * 30); // Stagger creation for better visual effect
     }
 }
 

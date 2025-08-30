@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Test</title>
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .test-button {
+            background: #FF69B4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .test-button:hover {
+            transform: scale(1.05);
+        }
+        .test-button:active {
+            transform: scale(0.95);
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 Confetti Animation Test 🎉</h1>
+    
+    <div class="info">
+        <p>Click the buttons below to test different confetti effects:</p>
+    </div>
+    
+    <button class="test-button" onclick="testConfetti()">
+        🎊 Test Confetti
+    </button>
+    
+    <button class="test-button" onclick="testMultipleConfetti()">
+        🎊 Multiple Bursts
+    </button>
+    
+    <button class="test-button" onclick="testFallbackConfetti()">
+        🎊 Fallback Confetti
+    </button>
+    
+    <div class="info">
+        <p><strong>Expected behavior:</strong></p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>Confetti pieces should fall from the top of the screen</li>
+            <li>Different shapes (circles, squares, triangles, stars)</li>
+            <li>Various colors and sizes</li>
+            <li>Spinning and bouncing animations</li>
+            <li>Pieces should disappear after falling</li>
+        </ul>
+    </div>
+
+    <script src="js/countdown.js"></script>
+    <script>
+        function testConfetti() {
+            if (window.CountdownManager && window.CountdownManager.createConfetti) {
+                console.log('Using CountdownManager confetti');
+                window.CountdownManager.createConfetti();
+            } else {
+                console.log('CountdownManager not available, using fallback');
+                createFallbackConfetti();
+            }
+        }
+        
+        function testMultipleConfetti() {
+            if (window.CountdownManager && window.CountdownManager.createConfetti) {
+                console.log('Creating multiple confetti bursts');
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        window.CountdownManager.createConfetti();
+                    }, i * 800);
+                }
+            } else {
+                console.log('CountdownManager not available');
+            }
+        }
+        
+        function testFallbackConfetti() {
+            console.log('Testing fallback confetti');
+            createFallbackConfetti();
+        }
+        
+        function createFallbackConfetti() {
+            const colors = ['#FF69B4', '#87CEEB', '#FFD700', '#FF6B6B', '#4ECDC4', '#FF8C42', '#9370DB', '#20B2AA'];
+            const confettiCount = 60;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const size = Math.random() * 8 + 6;
+                    const startX = Math.random() * 100;
+                    
+                    confetti.style.cssText = `
+                        position: fixed;
+                        top: -20px;
+                        left: ${startX}vw;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${color};
+                        border-radius: 50%;
+                        z-index: 9999;
+                        animation: confetti-fall 3s linear forwards;
+                    `;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.remove();
+                        }
+                    }, 4000);
+                }, i * 50);
+            }
+        }
+        
+        // Test on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded, testing confetti availability...');
+            if (window.CountdownManager && window.CountdownManager.createConfetti) {
+                console.log('✅ CountdownManager confetti is available');
+            } else {
+                console.log('❌ CountdownManager confetti is not available');
+            }
+        });
+    </script>
+</body>
+</html>
