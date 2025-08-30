@@ -1,7 +1,7 @@
 // ===== ADMIN DASHBOARD FUNCTIONALITY =====
 
 // Supabase configuration
-const SUPABASE_URL = 'https://nmruhcjzmdcoyohpgavcb.supabase.co';
+const SUPABASE_URL = 'https://nmruhcjzmdcyohpgavcb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tcnVoY2p6bWRjeW9ocGdhdmNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NzkwNTUsImV4cCI6MjA3MjE1NTA1NX0.V8SzHe8X9sHDXUvwO36DZWYP3gupF0x4YlYwnOJ2sXk';
 
 // Initialize Supabase client

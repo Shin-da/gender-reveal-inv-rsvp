@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Supabase Connection Test</h1>
+    
+    <div id="status"></div>
+    
+    <button onclick="testConnection()">Test Supabase Connection</button>
+    <button onclick="testDatabase()">Test Database Tables</button>
+    
+    <div id="results"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://nmruhcjzmdcyohpgavcb.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tcnVoY2p6bWRjeW9ocGdhdmNiIiwicl9pYXQiOjE3NTY1NzkwNTUsImV4cCI6MjA3MjE1NTA1NX0.V8SzHe8X9sHDXUvwO36DZWYP3gupF0x4YlYwnOJ2sXk';
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showResults(data) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        async function testConnection() {
+            showStatus('Testing Supabase connection...', 'info');
+            
+            try {
+                // Test basic connectivity
+                const response = await fetch(SUPABASE_URL + '/rest/v1/', {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+                    }
+                });
+                
+                if (response.ok) {
+                    showStatus('✅ Supabase connection successful!', 'success');
+                    showResults({ status: 'Connected', url: SUPABASE_URL });
+                } else {
+                    showStatus(`❌ Connection failed: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ Connection error: ${error.message}`, 'error');
+                showResults({ error: error.message, type: error.name });
+            }
+        }
+
+        async function testDatabase() {
+            showStatus('Testing database tables...', 'info');
+            
+            try {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                // Test if tables exist
+                const { data, error } = await supabase
+                    .from('rsvp_responses')
+                    .select('count')
+                    .limit(1);
+                
+                if (error) {
+                    showStatus(`❌ Database error: ${error.message}`, 'error');
+                    showResults({ error: error.message, code: error.code, details: error.details });
+                } else {
+                    showStatus('✅ Database connection successful! Tables are accessible.', 'success');
+                    showResults({ data, message: 'Tables accessible' });
+                }
+            } catch (error) {
+                showStatus(`❌ Database test error: ${error.message}`, 'error');
+                showResults({ error: error.message, type: error.name });
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            showStatus('Ready to test Supabase connection. Click the buttons above.', 'info');
+        });
+    </script>
+</body>
+</html>
