@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay & Ynn's Gender Reveal Party - September 13, 2025</title>
+    <meta name="description" content="Join Jay & Ynn for their special gender reveal party on September 13, 2025 at McDonald's Canlalay, Binan City, Laguna. RSVP now!">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts - Updated to include Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Jay & Ynn's Gender Reveal Party">
+    <meta property="og:description" content="Join us for a special gender reveal celebration!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="images/hero-bg.jpg">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#E91E63">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Gender Reveal">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
+</head>
+<body class="js-enabled">
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-baby"></i> Jay & Ynn
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#details">Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#rsvp">RSVP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">Gallery</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-background">
+            <div class="floating-elements">
+                <div class="floating-circle"></div>
+                <div class="floating-circle"></div>
+                <div class="floating-circle"></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-10">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            <span class="couple-names">Jay & Ynn</span>
+                        </h1>
+                        <h2 class="hero-subtitle">are excited to announce</h2>
+                        <div class="gender-reveal-text">
+                            <span class="reveal-text">Gender Reveal Party</span>
+                        </div>
+                        <div class="countdown-container">
+                            <div class="countdown-title">Counting down to the big reveal...</div>
+                            <div class="countdown" id="countdown">
+                                <div class="countdown-item">
+                                    <span class="countdown-number" id="days">00</span>
+                                    <span class="countdown-label">Days</span>
+                                </div>
+                                <div class="countdown-item">
+                                    <span class="countdown-number" id="hours">00</span>
+                                    <span class="countdown-label">Hours</span>
+                                </div>
+                                <div class="countdown-item">
+                                    <span class="countdown-number" id="minutes">00</span>
+                                    <span class="countdown-label">Minutes</span>
+                                </div>
+                                <div class="countdown-item">
+                                    <span class="countdown-number" id="seconds">00</span>
+                                    <span class="countdown-label">Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-buttons">
+                            <a href="#rsvp" class="btn btn-primary btn-lg me-3">
+                                <i class="fas fa-calendar-check"></i> RSVP Now
+                            </a>
+                            <a href="#details" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-info-circle"></i> Event Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Details Section -->
+    <section id="details" class="details-section baby-pattern-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title">Event Details</h2>
+                    <div class="event-info">
+                        <div class="event-card">
+                            <div class="event-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3>Date & Time</h3>
+                            <p class="event-details">September 13, 2025</p>
+                            <p class="event-details">11:00 AM - 2:30 PM</p>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3>Venue</h3>
+                            <p class="event-details">McDonald's Canlalay</p>
+                            <p class="event-details">Binan City, Laguna</p>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-icon">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            <h3>Dress Code</h3>
+                            <p class="event-details">Pink or Blue Attire</p>
+                            <p class="event-details">(Show your prediction!)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map Section -->
+            <div class="row mt-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="map-container">
+                        <h3 class="text-center mb-4">Location</h3>
+                        <div class="map-wrapper">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.8!2d121.1!3d14.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDE4JzAwLjAiTiAxMjHCsDA2JzAwLjAiRQ!5e0!3m2!1sen!2sph!4v1234567890"
+                                width="100%" 
+                                height="450" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Schedule -->
+            <div class="row mt-5">
+                <div class="col-lg-8 mx-auto">
+                    <h3 class="text-center mb-4">Event Schedule</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">11:00 AM</div>
+                            <div class="timeline-content">
+                                <h4>Welcome & Registration</h4>
+                                <p>Check-in and get your prediction card</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">11:30 AM</div>
+                            <div class="timeline-content">
+                                <h4>Lunch & Mingling</h4>
+                                <p>Enjoy delicious food and catch up with friends</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">1:00 PM</div>
+                            <div class="timeline-content">
+                                <h4>Games & Activities</h4>
+                                <p>Fun gender prediction games and activities</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">2:00 PM</div>
+                            <div class="timeline-content">
+                                <h4>The Big Reveal!</h4>
+                                <p>The moment we've all been waiting for</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">2:30 PM</div>
+                            <div class="timeline-content">
+                                <h4>Celebration & Photos</h4>
+                                <p>Capture the special moments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="rsvp-section baby-pattern-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title text-center">RSVP</h2>
+                    <p class="text-center mb-5">Please let us know if you can join us for this special celebration!</p>
+                    
+                    <form id="rsvpForm" class="rsvp-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="guestName" class="form-label">Guest Name(s) *</label>
+                                <input type="text" class="form-control" id="guestName" name="guestName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="attendeeCount" class="form-label">Number of Attendees *</label>
+                                <select class="form-select" id="attendeeCount" name="attendeeCount" required>
+                                    <option value="">Select number</option>
+                                    <option value="1">1 person</option>
+                                    <option value="2">2 people</option>
+                                    <option value="3">3 people</option>
+                                    <option value="4">4 people</option>
+                                    <option value="5">5+ people</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="dietaryRestrictions" class="form-label">Dietary Restrictions/Allergies</label>
+                            <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="2" placeholder="Any food allergies or dietary preferences?"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Gender Prediction *</label>
+                            <div class="gender-prediction-buttons">
+                                <input type="radio" class="btn-check" name="genderPrediction" id="boy" value="boy" required>
+                                <label class="btn btn-outline-primary gender-btn boy-btn" for="boy">
+                                    <i class="fas fa-mars"></i> It's a Boy!
+                                </label>
+                                
+                                <input type="radio" class="btn-check" name="genderPrediction" id="girl" value="girl">
+                                <label class="btn btn-outline-primary gender-btn girl-btn" for="girl">
+                                    <i class="fas fa-venus"></i> It's a Girl!
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="specialMessage" class="form-label">Special Message for Jay & Ynn</label>
+                            <textarea class="form-control" id="specialMessage" name="specialMessage" rows="3" placeholder="Share your excitement, advice, or well wishes..."></textarea>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg submit-btn">
+                                <i class="fas fa-paper-plane"></i> Send RSVP
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Success/Error Messages -->
+                    <div id="formMessages" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section baby-pattern-bg">
+        <div class="container">
+            <h2 class="section-title text-center">Photo Gallery</h2>
+            <p class="text-center mb-5">A glimpse into our journey</p>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('images/baby-feet-sample.jpg');">
+                            <div class="gallery-overlay">
+                                <h4>Baby Feet</h4>
+                                <p>Precious little toes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('images/baby-hands-sample.jpg');">
+                            <div class="gallery-overlay">
+                                <h4>Baby Hands</h4>
+                                <p>Tiny fingers of love</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('images/newborn-feet-sample.jpg');">
+                            <div class="gallery-overlay">
+                                <h4>Newborn Feet</h4>
+                                <p>Perfect little feet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h3>We can't wait to celebrate with you!</h3>
+                    <p>Thank you for being part of this special moment in our lives.</p>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-link" onclick="shareOnTwitter()">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" onclick="shareOnWhatsApp()">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="footer-bottom">
+                        <p>&copy; 2025 Jay & Ynn's Gender Reveal. Made with <i class="fas fa-heart"></i> for our little one.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/rsvp.js"></script>
+</body>
+</html>
