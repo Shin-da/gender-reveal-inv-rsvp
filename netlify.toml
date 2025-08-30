@@ -79,24 +79,18 @@
 
 # Environment variables (these should be set in Netlify dashboard)
 [context.production.environment]
-  SUPABASE_URL = "your-production-supabase-url"
-  SUPABASE_ANON_KEY = "your-production-supabase-anon-key"
+  SUPABASE_URL = "https://nmruhcjzmdcoyohpgavcb.supabase.co"
+  SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tcnVoY2p6bWRjeW9ocGdhdmNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NzkwNTUsImV4cCI6MjA3MjE1NTA1NX0.V8SzHe8X9sHDXUvwO36DZWYP3gupF0x4YlYwnOJ2sXk"
+  NETLIFY_FORMS_ENABLED = "true"
+  GOOGLE_ANALYTICS_ID = "your-google-analytics-id"
+  FACEBOOK_PIXEL_ID = "your-facebook-pixel-id"
 
 [context.deploy-preview.environment]
-  SUPABASE_URL = "your-staging-supabase-url"
-  SUPABASE_ANON_KEY = "your-staging-supabase-anon-key"
+  SUPABASE_URL = "https://nmruhcjzmdcoyohpgavcb.supabase.co"
+  SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tcnVoY2p6bWRjeW9ocGdhdmNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NzkwNTUsImV4cCI6MjA3MjE1NTA1NX0.V8SzHe8X9sHDXUvwO36DZWYP3gupF0x4YlYwnOJ2sXk"
 
 # Build plugins (if needed)
 # [[plugins]]
 #   package = "@netlify/plugin-lighthouse"
 #   [plugins.inputs]
 #     audits = "performance,accessibility,best-practices,seo"
-
-# Form handling (if using Netlify Forms as fallback)
-[context.production.environment]
-  NETLIFY_FORMS_ENABLED = "true"
-
-# Analytics (optional)
-[context.production.environment]
-  GOOGLE_ANALYTICS_ID = "your-google-analytics-id"
-  FACEBOOK_PIXEL_ID = "your-facebook-pixel-id"
