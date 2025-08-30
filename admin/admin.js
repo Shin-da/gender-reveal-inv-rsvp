@@ -113,6 +113,7 @@ function updateGuestTable(rsvps) {
 
     rsvps.forEach(rsvp => {
         const row = document.createElement('tr');
+        row.setAttribute('data-guest-id', rsvp.id);
         row.innerHTML = `
             <td><strong>${rsvp.guest_name}</strong></td>
             <td>${rsvp.email}</td>
@@ -236,19 +237,36 @@ function getTimelineData(rsvps) {
 // ===== GUEST MANAGEMENT =====
 
 function editGuest(guestId) {
-    // Find guest data
-    const guest = findGuestById(guestId);
-    if (!guest) return;
+    // Find guest data from the current table data
+    const guestRow = document.querySelector(`tr[data-guest-id="${guestId}"]`);
+    if (!guestRow) {
+        // If we can't find the row, reload data and try again
+        loadDashboardData();
+        setTimeout(() => editGuest(guestId), 500);
+        return;
+    }
+
+    // Extract data from the table row
+    const guest = {
+        id: guestId,
+        guest_name: guestRow.querySelector('td:nth-child(1) strong').textContent,
+        email: guestRow.querySelector('td:nth-child(2)').textContent,
+        phone: guestRow.querySelector('td:nth-child(3)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(3)').textContent,
+        attendee_count: parseInt(guestRow.querySelector('td:nth-child(4) .badge').textContent),
+        gender_prediction: guestRow.querySelector('td:nth-child(5) .gender-badge').textContent.toLowerCase(),
+        dietary_restrictions: guestRow.querySelector('td:nth-child(6)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(6)').textContent,
+        special_message: guestRow.querySelector('td:nth-child(7)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(7)').textContent
+    };
 
     // Populate modal
     document.getElementById('editGuestId').value = guest.id;
     document.getElementById('editGuestName').value = guest.guest_name;
     document.getElementById('editEmail').value = guest.email;
-    document.getElementById('editPhone').value = guest.phone || '';
+    document.getElementById('editPhone').value = guest.phone;
     document.getElementById('editAttendeeCount').value = guest.attendee_count;
     document.getElementById('editGenderPrediction').value = guest.gender_prediction;
-    document.getElementById('editDietaryRestrictions').value = guest.dietary_restrictions || '';
-    document.getElementById('editSpecialMessage').value = guest.special_message || '';
+    document.getElementById('editDietaryRestrictions').value = guest.dietary_restrictions;
+    document.getElementById('editSpecialMessage').value = guest.special_message;
 
     // Show modal
     const modal = new bootstrap.Modal(document.getElementById('editGuestModal'));
@@ -317,11 +335,7 @@ async function deleteGuest(guestId) {
     }
 }
 
-function findGuestById(guestId) {
-    // This would need to be implemented based on your data structure
-    // For now, we'll reload the data to get the latest
-    return null;
-}
+// Function removed - no longer needed
 
 // ===== EXPORT FUNCTIONALITY =====
 
