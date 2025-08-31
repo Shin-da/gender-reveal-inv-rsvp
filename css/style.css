@@ -1136,12 +1136,14 @@ font-size: 1rem;
         padding: 2rem 1rem;
     }
     
-    .gender-prediction-buttons {
+    .gender-prediction-buttons,
+    .attendance-buttons {
         flex-direction: column;
         gap: 0.8rem;
     }
     
-    .gender-btn {
+    .gender-btn,
+    .attendance-btn {
         min-width: auto;
         padding: 0.9rem 1rem;
         font-size: 0.95rem;
@@ -1162,7 +1164,8 @@ font-size: 1rem;
         padding: 1.5rem 0.8rem;
     }
     
-    .gender-btn {
+    .gender-btn,
+    .attendance-btn {
         padding: 0.8rem 0.9rem;
         font-size: 0.9rem;
     }
@@ -1175,14 +1178,16 @@ font-size: 1rem;
     }
 }
 
-.gender-prediction-buttons {
+.gender-prediction-buttons,
+.attendance-buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.gender-btn {
+.gender-btn,
+.attendance-btn {
     flex: 1;
     min-width: 150px;
     padding: 1rem;
@@ -1214,6 +1219,38 @@ font-size: 1rem;
 .girl-btn:hover, .btn-check:checked + .girl-btn {
     background: var(--primary-rose);
     color: var(--neutral-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Conditional field transitions */
+.conditional-field {
+    transition: all 0.3s ease;
+}
+
+/* Attendance button styles */
+.coming-btn {
+    border-color: #28a745;
+    color: #28a745;
+    background: transparent;
+}
+
+.coming-btn:hover, .btn-check:checked + .coming-btn {
+    background: #28a745;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.not-coming-btn {
+    border-color: #6c757d;
+    color: #6c757d;
+    background: transparent;
+}
+
+.not-coming-btn:hover, .btn-check:checked + .not-coming-btn {
+    background: #6c757d;
+    color: white;
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
@@ -1435,28 +1472,28 @@ font-size: 1rem;
     }
     
     .countdown-container {
-        padding: 1.5rem 1rem;
-        margin: 2rem 0;
+        padding: 1rem 0.8rem;
+        margin: 1.5rem 0;
         max-width: 100%;
     }
     
     .countdown {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
-        max-width: 280px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4rem;
+        max-width: 100%;
     }
     
     .countdown-item {
-        padding: 1.2rem 0.5rem;
+        padding: 0.8rem 0.3rem;
     }
     
     .countdown-number {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
     }
     
     .countdown-label {
-        font-size: 0.7rem;
-        margin-top: 0.3rem;
+        font-size: 0.65rem;
+        margin-top: 0.2rem;
     }
     
     .hero-buttons {
@@ -1588,26 +1625,26 @@ font-size: 1rem;
     }
     
     .countdown-container {
-        padding: 1.2rem 0.8rem;
-        margin: 1.5rem 0;
+        padding: 0.8rem 0.6rem;
+        margin: 1.2rem 0;
     }
     
     .countdown {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.6rem;
-        max-width: 260px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.3rem;
+        max-width: 100%;
     }
     
     .countdown-item {
-        padding: 1rem 0.4rem;
+        padding: 0.7rem 0.25rem;
     }
     
     .countdown-number {
-        font-size: 1.6rem;
+        font-size: 1.2rem;
     }
     
     .countdown-label {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
     
     .hero-buttons .btn {
@@ -1704,20 +1741,21 @@ font-size: 1rem;
     }
     
     .countdown {
-        max-width: 240px;
-        gap: 0.5rem;
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 100%;
+        gap: 0.25rem;
     }
     
     .countdown-item {
-        padding: 0.8rem 0.3rem;
+        padding: 0.6rem 0.2rem;
     }
     
     .countdown-number {
-        font-size: 1.4rem;
+        font-size: 1.1rem;
     }
     
     .countdown-label {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
     }
     
     .hero-buttons .btn {

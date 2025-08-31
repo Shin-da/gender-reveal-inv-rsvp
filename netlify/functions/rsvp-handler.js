@@ -56,6 +56,7 @@ exports.handler = async (event, context) => {
             email: requestBody.email,
             phone: requestBody.phone || null,
             attendee_count: parseInt(requestBody.attendee_count),
+            attendance: requestBody.attendance,
             dietary_restrictions: requestBody.dietary_restrictions || null,
             gender_prediction: requestBody.gender_prediction,
             special_message: requestBody.special_message || null,
@@ -125,6 +126,10 @@ function validateRSVPData(data) {
     
     if (!data.attendee_count || data.attendee_count < 1) {
         errors.push('Attendee count must be at least 1');
+    }
+    
+    if (!data.attendance || !['coming', 'notComing'].includes(data.attendance)) {
+        errors.push('Attendance status is required');
     }
     
     if (!data.gender_prediction || !['boy', 'girl'].includes(data.gender_prediction)) {

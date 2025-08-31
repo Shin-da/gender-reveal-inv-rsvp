@@ -32,6 +32,7 @@ function initRSVP() {
         rsvpForm.addEventListener('submit', handleFormSubmit);
         initFormValidation();
         initGenderPredictionButtons();
+        initAttendanceLogic();
     }
 }
 
@@ -78,6 +79,7 @@ function getFormData() {
         email: formData.get('email'),
         phone: formData.get('phone') || null,
         attendee_count: parseInt(formData.get('attendeeCount')),
+        attendance: formData.get('attendance'),
         dietary_restrictions: formData.get('dietaryRestrictions') || null,
         gender_prediction: formData.get('genderPrediction'),
         special_message: formData.get('specialMessage') || null,
@@ -270,6 +272,34 @@ function initGenderPredictionButtons() {
         boyBtn.addEventListener('click', () => handleGenderSelection('boy'));
         girlBtn.addEventListener('click', () => handleGenderSelection('girl'));
     }
+}
+
+function initAttendanceLogic() {
+    const attendanceButtons = document.querySelectorAll('input[name="attendance"]');
+    const conditionalFields = document.querySelectorAll('.conditional-field');
+    
+    attendanceButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const isComing = this.value === 'coming';
+            
+            // Show/hide conditional fields based on attendance
+            conditionalFields.forEach(field => {
+                if (isComing) {
+                    field.style.display = 'block';
+                    field.style.opacity = '1';
+                    // Enable required fields
+                    const requiredInputs = field.querySelectorAll('[required]');
+                    requiredInputs.forEach(input => input.disabled = false);
+                } else {
+                    field.style.display = 'none';
+                    field.style.opacity = '0';
+                    // Disable required fields to prevent validation errors
+                    const requiredInputs = field.querySelectorAll('[required]');
+                    requiredInputs.forEach(input => input.disabled = true);
+                }
+            });
+        });
+    });
 }
 
 function handleGenderSelection(gender) {

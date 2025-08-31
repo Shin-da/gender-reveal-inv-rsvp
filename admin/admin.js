@@ -13,7 +13,7 @@ try {
 }
 
 // Chart instances
-let genderChart, timelineChart;
+let genderChart, attendanceChart, timelineChart;
 
 // Initialize admin dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -87,6 +87,9 @@ async function loadDashboardData() {
             return;
         }
 
+        // Store all RSVPs for filtering
+        allRSVPs = rsvps;
+
         // Update dashboard stats
         updateDashboardStats(rsvps);
         
@@ -106,11 +109,15 @@ function updateDashboardStats(rsvps) {
     const totalAttendees = rsvps.reduce((sum, rsvp) => sum + (rsvp.attendee_count || 1), 0);
     const boyPredictions = rsvps.filter(rsvp => rsvp.gender_prediction === 'boy').length;
     const girlPredictions = rsvps.filter(rsvp => rsvp.gender_prediction === 'girl').length;
+    const comingCount = rsvps.filter(rsvp => rsvp.attendance === 'coming').length;
+    const notComingCount = rsvps.filter(rsvp => rsvp.attendance === 'notComing').length;
 
     document.getElementById('totalRSVPs').textContent = totalRSVPs;
     document.getElementById('totalAttendees').textContent = totalAttendees;
     document.getElementById('boyPredictions').textContent = boyPredictions;
     document.getElementById('girlPredictions').textContent = girlPredictions;
+    document.getElementById('comingCount').textContent = comingCount;
+    document.getElementById('notComingCount').textContent = notComingCount;
 }
 
 function updateGuestTable(rsvps) {
@@ -131,6 +138,7 @@ function updateGuestTable(rsvps) {
             <td>${rsvp.email}</td>
             <td>${rsvp.phone || '-'}</td>
             <td><span class="badge bg-primary">${rsvp.attendee_count}</span></td>
+            <td><span class="attendance-badge ${rsvp.attendance}">${rsvp.attendance === 'coming' ? 'Coming' : 'Not Coming'}</span></td>
             <td><span class="gender-badge ${rsvp.gender_prediction}">${rsvp.gender_prediction}</span></td>
             <td>${rsvp.dietary_restrictions || '-'}</td>
             <td>${rsvp.special_message || '-'}</td>
@@ -176,6 +184,10 @@ function updateGuestTable(rsvps) {
                     <span class="info-value"><span class="badge bg-primary">${rsvp.attendee_count}</span></span>
                 </div>
                 <div class="info-item">
+                    <span class="info-label">Attendance</span>
+                    <span class="info-value"><span class="attendance-badge ${rsvp.attendance}">${rsvp.attendance === 'coming' ? 'Coming' : 'Not Coming'}</span></span>
+                </div>
+                <div class="info-item">
                     <span class="info-label">Gender Prediction</span>
                     <span class="info-value"><span class="gender-badge ${rsvp.gender_prediction}">${rsvp.gender_prediction}</span></span>
                 </div>
@@ -209,6 +221,29 @@ function initCharts() {
             datasets: [{
                 data: [0, 0],
                 backgroundColor: ['#17a2b8', '#ffc107'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Attendance Status Pie Chart
+    const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+    attendanceChart = new Chart(attendanceCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Coming', 'Not Coming'],
+            datasets: [{
+                data: [0, 0],
+                backgroundColor: ['#28a745', '#6c757d'],
                 borderWidth: 0
             }]
         },
@@ -266,6 +301,13 @@ function updateCharts(rsvps) {
     genderChart.data.datasets[0].data = [boyCount, girlCount];
     genderChart.update();
 
+    // Update attendance chart
+    const comingCount = rsvps.filter(rsvp => rsvp.attendance === 'coming').length;
+    const notComingCount = rsvps.filter(rsvp => rsvp.attendance === 'notComing').length;
+    
+    attendanceChart.data.datasets[0].data = [comingCount, notComingCount];
+    attendanceChart.update();
+
     // Update timeline chart
     const timelineData = getTimelineData(rsvps);
     timelineChart.data.labels = timelineData.labels;
@@ -314,9 +356,10 @@ function editGuest(guestId) {
         email: guestRow.querySelector('td:nth-child(2)').textContent,
         phone: guestRow.querySelector('td:nth-child(3)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(3)').textContent,
         attendee_count: parseInt(guestRow.querySelector('td:nth-child(4) .badge').textContent),
-        gender_prediction: guestRow.querySelector('td:nth-child(5) .gender-badge').textContent.toLowerCase(),
-        dietary_restrictions: guestRow.querySelector('td:nth-child(6)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(6)').textContent,
-        special_message: guestRow.querySelector('td:nth-child(7)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(7)').textContent
+        attendance: guestRow.querySelector('td:nth-child(5) .attendance-badge').textContent === 'Coming' ? 'coming' : 'notComing',
+        gender_prediction: guestRow.querySelector('td:nth-child(6) .gender-badge').textContent.toLowerCase(),
+        dietary_restrictions: guestRow.querySelector('td:nth-child(7)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(7)').textContent,
+        special_message: guestRow.querySelector('td:nth-child(8)').textContent === '-' ? '' : guestRow.querySelector('td:nth-child(8)').textContent
     };
 
     // Populate modal
@@ -325,6 +368,7 @@ function editGuest(guestId) {
     document.getElementById('editEmail').value = guest.email;
     document.getElementById('editPhone').value = guest.phone;
     document.getElementById('editAttendeeCount').value = guest.attendee_count;
+    document.getElementById('editAttendance').value = guest.attendance;
     document.getElementById('editGenderPrediction').value = guest.gender_prediction;
     document.getElementById('editDietaryRestrictions').value = guest.dietary_restrictions;
     document.getElementById('editSpecialMessage').value = guest.special_message;
@@ -341,6 +385,7 @@ async function saveGuestEdit() {
         email: document.getElementById('editEmail').value,
         phone: document.getElementById('editPhone').value || null,
         attendee_count: parseInt(document.getElementById('editAttendeeCount').value),
+        attendance: document.getElementById('editAttendance').value,
         gender_prediction: document.getElementById('editGenderPrediction').value,
         dietary_restrictions: document.getElementById('editDietaryRestrictions').value || null,
         special_message: document.getElementById('editSpecialMessage').value || null,
@@ -397,6 +442,53 @@ async function deleteGuest(guestId) {
 }
 
 // Function removed - no longer needed
+
+// ===== FILTERING FUNCTIONS =====
+
+let allRSVPs = []; // Store all RSVPs for filtering
+
+function filterGuests() {
+    const attendanceFilter = document.getElementById('filterAttendance').value;
+    const genderFilter = document.getElementById('filterGender').value;
+    const searchTerm = document.getElementById('searchGuest').value.toLowerCase();
+
+    let filteredRSVPs = allRSVPs.filter(rsvp => {
+        // Attendance filter
+        if (attendanceFilter && rsvp.attendance !== attendanceFilter) {
+            return false;
+        }
+        
+        // Gender filter
+        if (genderFilter && rsvp.gender_prediction !== genderFilter) {
+            return false;
+        }
+        
+        // Search filter
+        if (searchTerm) {
+            const nameMatch = rsvp.guest_name.toLowerCase().includes(searchTerm);
+            const emailMatch = rsvp.email.toLowerCase().includes(searchTerm);
+            if (!nameMatch && !emailMatch) {
+                return false;
+            }
+        }
+        
+        return true;
+    });
+
+    updateGuestTable(filteredRSVPs);
+    updateDashboardStats(filteredRSVPs);
+    updateCharts(filteredRSVPs);
+}
+
+function clearFilters() {
+    document.getElementById('filterAttendance').value = '';
+    document.getElementById('filterGender').value = '';
+    document.getElementById('searchGuest').value = '';
+    
+    updateGuestTable(allRSVPs);
+    updateDashboardStats(allRSVPs);
+    updateCharts(allRSVPs);
+}
 
 // ===== EXPORT FUNCTIONALITY =====
 

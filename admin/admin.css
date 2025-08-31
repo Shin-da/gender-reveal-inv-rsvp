@@ -167,6 +167,26 @@ body {
     color: white;
 }
 
+/* Attendance Badges */
+.attendance-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.attendance-badge.coming {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.attendance-badge.notComing {
+    background-color: var(--danger-color);
+    color: white;
+}
+
 /* Modal Styling */
 .modal-content {
     border: none;

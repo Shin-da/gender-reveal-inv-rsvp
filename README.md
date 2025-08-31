@@ -77,6 +77,7 @@ CREATE TABLE rsvp_responses (
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(20),
     attendee_count INTEGER DEFAULT 1,
+    attendance VARCHAR(20) NOT NULL CHECK (attendance IN ('coming', 'notComing')),
     dietary_restrictions TEXT,
     special_message TEXT,
     gender_prediction VARCHAR(10) CHECK (gender_prediction IN ('boy', 'girl')),
