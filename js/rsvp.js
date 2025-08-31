@@ -73,14 +73,16 @@ async function handleFormSubmit(event) {
 
 function getFormData() {
     const formData = new FormData(rsvpForm);
+    const attendance = formData.get('attendance');
+    const isComing = attendance === 'coming';
     
     return {
         guest_name: formData.get('guestName'),
         email: formData.get('email'),
-        phone: formData.get('phone') || null,
-        attendee_count: parseInt(formData.get('attendeeCount')),
-        attendance: formData.get('attendance'),
-        dietary_restrictions: formData.get('dietaryRestrictions') || null,
+        phone: isComing ? (formData.get('phone') || null) : null,
+        attendee_count: isComing ? parseInt(formData.get('attendeeCount')) : 0,
+        attendance: attendance,
+        dietary_restrictions: isComing ? (formData.get('dietaryRestrictions') || null) : null,
         gender_prediction: formData.get('genderPrediction'),
         special_message: formData.get('specialMessage') || null,
         created_at: new Date().toISOString()
@@ -277,6 +279,8 @@ function initGenderPredictionButtons() {
 function initAttendanceLogic() {
     const attendanceButtons = document.querySelectorAll('input[name="attendance"]');
     const conditionalFields = document.querySelectorAll('.conditional-field');
+    const attendanceHelp = document.getElementById('attendanceHelp');
+    const attendanceHelpText = document.getElementById('attendanceHelpText');
     
     attendanceButtons.forEach(radio => {
         radio.addEventListener('change', function() {
@@ -287,19 +291,49 @@ function initAttendanceLogic() {
                 if (isComing) {
                     field.style.display = 'block';
                     field.style.opacity = '1';
-                    // Enable required fields
-                    const requiredInputs = field.querySelectorAll('[required]');
-                    requiredInputs.forEach(input => input.disabled = false);
+                    // Re-enable required fields and restore required attribute
+                    const requiredInputs = field.querySelectorAll('[data-originally-required]');
+                    requiredInputs.forEach(input => {
+                        input.disabled = false;
+                        input.required = true;
+                    });
                 } else {
                     field.style.display = 'none';
                     field.style.opacity = '0';
-                    // Disable required fields to prevent validation errors
+                    // Remove required attribute and disable fields to prevent validation errors
                     const requiredInputs = field.querySelectorAll('[required]');
-                    requiredInputs.forEach(input => input.disabled = true);
+                    requiredInputs.forEach(input => {
+                        // Store original required state if not already stored
+                        if (!input.hasAttribute('data-originally-required')) {
+                            input.setAttribute('data-originally-required', 'true');
+                        }
+                        input.required = false;
+                        input.disabled = true;
+                    });
                 }
             });
+            
+            // Show helpful message
+            if (isComing) {
+                attendanceHelp.style.display = 'block';
+                attendanceHelpText.textContent = 'Great! Please fill in the additional details below.';
+                attendanceHelp.className = 'form-text mt-2';
+                attendanceHelp.style.color = '#A8BBA3';
+                attendanceHelp.style.fontWeight = '500';
+            } else {
+                attendanceHelp.style.display = 'block';
+                attendanceHelpText.textContent = 'No worries! You only need to provide your name, email, and gender prediction.';
+                attendanceHelp.className = 'form-text text-muted mt-2';
+            }
         });
     });
+    
+    // Initialize with "coming" selected by default (or handle initial state)
+    const defaultAttendance = document.querySelector('input[name="attendance"]:checked');
+    if (defaultAttendance) {
+        // Trigger change event to set initial state
+        defaultAttendance.dispatchEvent(new Event('change'));
+    }
 }
 
 function handleGenderSelection(gender) {
@@ -331,37 +365,74 @@ function handleGenderSelection(gender) {
 function showSuccessMessage() {
     clearMessages();
     
+    // Get the attendance choice to customize the message
+    const attendanceChoice = document.querySelector('input[name="attendance"]:checked');
+    const isComing = attendanceChoice && attendanceChoice.value === 'coming';
+    
     const successDiv = document.createElement('div');
     successDiv.className = 'alert alert-success alert-dismissible fade show';
-    successDiv.innerHTML = `
-        <div class="text-center">
-            <i class="fas fa-check-circle me-2" style="font-size: 1.5em; color: #28a745;"></i>
-            <h4 class="mb-2">🎉 Congratulations! 🎉</h4>
-            <p class="mb-2"><strong>Your RSVP has been submitted successfully!</strong></p>
-            <p class="mb-0">We can't wait to celebrate with you at the gender reveal party!</p>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
+    
+    if (isComing) {
+        // Message for those who are coming
+        successDiv.innerHTML = `
+            <div class="text-center">
+                <i class="fas fa-check-circle me-2" style="font-size: 1.5em; color: #A8BBA3;"></i>
+                <h4 class="mb-2">🎉 Yay! You're Coming! 🎉</h4>
+                <p class="mb-2"><strong>Your RSVP has been submitted successfully!</strong></p>
+                <p class="mb-0">We can't wait to celebrate with you at the gender reveal party!</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Add custom styling for coming message with new green color
+        successDiv.style.background = 'linear-gradient(135deg, #A8BBA3 0%, #8BA892 100%)';
+        successDiv.style.borderColor = '#A8BBA3';
+        
+        // Add celebration effects for those coming
+        setTimeout(() => {
+            if (window.CountdownManager && window.CountdownManager.createConfetti) {
+                // Create multiple confetti bursts for extra celebration
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        window.CountdownManager.createConfetti();
+                    }, i * 800);
+                }
+            } else {
+                // Fallback confetti if CountdownManager is not available
+                createFallbackConfetti();
+            }
+        }, 300);
+        
+        // Add celebration emoji animation
+        addCelebrationEmojis();
+        
+        // Play celebration sound
+        playCelebrationSound();
+        
+    } else {
+        // Message for those who can't make it
+        successDiv.innerHTML = `
+            <div class="text-center">
+                <i class="fas fa-heart me-2" style="font-size: 1.5em; color: ;"></i>
+                <h4 class="mb-2">💝 Thank You! 💝</h4>
+                <p class="mb-2"><strong>Your RSVP has been submitted successfully!</strong></p>
+                <p class="mb-0">We understand and appreciate you letting us know. We'll miss you but we're grateful for your support and well wishes!</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Add custom styling for appreciation message
+        successDiv.style.background = 'linear-gradient(135deg, var(--primary-rose), var(--primary-blue));';
+        successDiv.style.borderColor = '#e91e63';
+        
+        // Add gentle heart animation for those not coming
+        addHeartAnimation(successDiv);
+    }
     
     formMessages.appendChild(successDiv);
     
     // Scroll to message
     formMessages.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    
-    // Add celebration effect with confetti
-    setTimeout(() => {
-        if (window.CountdownManager && window.CountdownManager.createConfetti) {
-            // Create multiple confetti bursts for extra celebration
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => {
-                    window.CountdownManager.createConfetti();
-                }, i * 800);
-            }
-        } else {
-            // Fallback confetti if CountdownManager is not available
-            createFallbackConfetti();
-        }
-    }, 300);
     
     // Add success animation to the form
     rsvpForm.classList.add('success-bounce');
@@ -369,14 +440,8 @@ function showSuccessMessage() {
         rsvpForm.classList.remove('success-bounce');
     }, 1000);
     
-    // Play celebration sound
-    playCelebrationSound();
-    
     // Add sparkle effect to the success message
     addSparkleEffect(successDiv);
-    
-    // Add celebration emoji animation
-    addCelebrationEmojis();
 }
 
 function addCelebrationEmojis() {
@@ -406,6 +471,38 @@ function addCelebrationEmojis() {
                 }
             }, 4000);
         }, index * 200);
+    });
+}
+
+function addHeartAnimation(element) {
+    // Add gentle floating hearts for those not coming
+    const hearts = ['💝', '💖', '💕', '💗', '💓'];
+    const container = element || document.body;
+    
+    hearts.forEach((heart, index) => {
+        setTimeout(() => {
+            const heartElement = document.createElement('div');
+            heartElement.textContent = heart;
+            heartElement.style.cssText = `
+                position: absolute;
+                font-size: 1.5rem;
+                z-index: 1000;
+                pointer-events: none;
+                animation: heart-float 3s ease-out forwards;
+                left: ${Math.random() * 80 + 10}%;
+                top: 100%;
+                opacity: 0.8;
+            `;
+            
+            container.appendChild(heartElement);
+            
+            // Remove heart after animation
+            setTimeout(() => {
+                if (heartElement.parentNode) {
+                    heartElement.remove();
+                }
+            }, 3000);
+        }, index * 300);
     });
 }
 
@@ -558,6 +655,26 @@ function resetForm() {
     if (boyBtn && girlBtn) {
         boyBtn.classList.remove('active');
         girlBtn.classList.remove('active');
+    }
+    
+    // Reset attendance logic - show conditional fields by default
+    const conditionalFields = document.querySelectorAll('.conditional-field');
+    conditionalFields.forEach(field => {
+        field.style.display = 'block';
+        field.style.opacity = '1';
+        
+        // Re-enable required fields
+        const requiredInputs = field.querySelectorAll('[data-originally-required]');
+        requiredInputs.forEach(input => {
+            input.disabled = false;
+            input.required = true;
+        });
+    });
+    
+    // Hide attendance help message
+    const attendanceHelp = document.getElementById('attendanceHelp');
+    if (attendanceHelp) {
+        attendanceHelp.style.display = 'none';
     }
 }
 

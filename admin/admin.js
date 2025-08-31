@@ -243,7 +243,7 @@ function initCharts() {
             labels: ['Coming', 'Not Coming'],
             datasets: [{
                 data: [0, 0],
-                backgroundColor: ['#28a745', '#6c757d'],
+                backgroundColor: ['#A8BBA3', '#6c757d'],
                 borderWidth: 0
             }]
         },

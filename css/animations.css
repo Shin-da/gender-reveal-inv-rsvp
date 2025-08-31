@@ -71,6 +71,21 @@
     }
 }
 
+/* Heart float animation for gentle appreciation */
+@keyframes heart-float {
+    0% {
+        transform: translateY(100%) scale(0.8);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px) scale(1.2);
+        opacity: 0;
+    }
+}
+
 /* Gentle floating animation for elegant circles */
 @keyframes float-gentle {
     0%, 100% {

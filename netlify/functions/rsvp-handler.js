@@ -124,8 +124,16 @@ function validateRSVPData(data) {
         errors.push('Invalid email format');
     }
     
-    if (!data.attendee_count || data.attendee_count < 1) {
-        errors.push('Attendee count must be at least 1');
+    // Attendee count validation - only required if coming
+    if (data.attendance === 'coming') {
+        if (!data.attendee_count || data.attendee_count < 1) {
+            errors.push('Attendee count must be at least 1 when attending');
+        }
+    } else if (data.attendance === 'notComing') {
+        // For not coming, set attendee_count to 0 if not provided
+        if (data.attendee_count === undefined || data.attendee_count === null) {
+            data.attendee_count = 0;
+        }
     }
     
     if (!data.attendance || !['coming', 'notComing'].includes(data.attendance)) {

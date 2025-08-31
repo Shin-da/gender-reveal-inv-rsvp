@@ -262,6 +262,7 @@
                                     <option value="4">4 people</option>
                                     <option value="5">5+ people</option>
                                 </select>
+                                <small class="form-text text-muted">Required only if attending</small>
                             </div>
                         </div>
 
@@ -277,6 +278,10 @@
                                 <label class="btn btn-outline-secondary attendance-btn not-coming-btn" for="notComing">
                                     <i class="fas fa-times-circle"></i> Sorry, I Can't Make It
                                 </label>
+                            </div>
+                            <div id="attendanceHelp" class="form-text text-muted mt-2" style="display: none;">
+                                <i class="fas fa-info-circle"></i> 
+                                <span id="attendanceHelpText"></span>
                             </div>
                         </div>
 

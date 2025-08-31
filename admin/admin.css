@@ -178,7 +178,7 @@ body {
 }
 
 .attendance-badge.coming {
-    background-color: var(--success-color);
+    background-color: #A8BBA3;
     color: white;
 }
 
