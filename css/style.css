@@ -592,7 +592,7 @@ h1, h2, h3, h4, h5, h6 {
 .reveal-text {
     font-size: 3rem;
     font-weight: 700;
-    color: var(--dark-text);
+    /* color: var(--dark-text); */
     background: linear-gradient(135deg, var(--primary-rose), var(--primary-blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -611,17 +611,19 @@ h1, h2, h3, h4, h5, h6 {
     left: 0;
     right: 0;
     bottom: 0;
+    /* padding: 0.5rem; */
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
     border-radius: 20px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: var(--neutral-white);
+    /* backdrop-filter: blur(10px); */
+    /* -webkit-backdrop-filter: blur(10px); */
     z-index: -1;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .hero-title {
     font-size: 4rem;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     animation: fadeInUp 1s ease-out;
 }
 
